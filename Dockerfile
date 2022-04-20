@@ -36,12 +36,15 @@ ENV EXT_REDIS_VERSION=5.2.2 \
     EXT_IGBINARY_VERSION=3.1.2
 
 # Install PHP extensions
-RUN requirements="libpng-dev libjpeg62-turbo libjpeg62-turbo-dev libfreetype6 libfreetype6-dev" \
+RUN requirements="libpng-dev libjpeg62-turbo libjpeg62-turbo-dev libfreetype6 libfreetype6-dev libgpgme11-dev" \
     && apt-get update \
     && apt-get install -y $requirements \
     # gd
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install gd \
+    # gnupg
+    && pecl install gnupg \
+    && docker-php-ext-enable gnupg \
 # Install database driver    
     # pdo_mysql
     && docker-php-ext-install pdo_mysql \
