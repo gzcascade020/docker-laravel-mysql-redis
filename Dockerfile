@@ -1,7 +1,7 @@
-FROM gzcascade/php:7.2-apache-stretch
+FROM gzcascade/php:7.4-apache-bullseye
 
 # Description
-# This image provides an Apache 2.4 + PHP 7.2 environment for running Laravel applications.
+# This image provides an Apache 2.4 + PHP 7.4 environment for running Laravel applications.
 # Exposed ports:
 # * 8080 - alternative port for http
 
@@ -16,7 +16,7 @@ ENV SUMMARY="Platform for building and running Laravel $LARAVEL_VERSION applicat
 LABEL summary="${SUMMARY}" \
       description="${DESCRIPTION}" \
       io.k8s.description="${DESCRIPTION}" \
-      io.k8s.display-name="Apache 2.4 with Laravel ${LARAVEL_VERSION}" \
+      io.k8s.display-name="Apache 2.4. with Laravel ${LARAVEL_VERSION}" \
       io.openshift.expose-services="8080:http" \
       io.openshift.tags="${NAME},${NAME}${LARAVEL_VER_SHORT}" \
       version="${LARAVEL_VERSION}"
@@ -40,7 +40,7 @@ RUN requirements="libpng-dev libjpeg62-turbo libjpeg62-turbo-dev libfreetype6 li
     && apt-get update \
     && apt-get install -y $requirements \
     # gd
-    && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
+    && docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/ \
     && docker-php-ext-install gd \
     # gnupg
     && pecl install gnupg \
