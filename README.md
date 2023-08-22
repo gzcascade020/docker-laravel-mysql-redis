@@ -1,13 +1,13 @@
-Laravel 5.7 container image
+Laravel 10 container image
 ================
 
-This container image includes PHP 7.2 (gd, pdo_mysql, phpredis) as a base image for your Laravel 5.7 applications.
+This container image includes PHP 7.2 (gd, pdo_mysql, phpredis, bcmatch, intl) as a base image for your Laravel 10 applications.
 
 Description
 -----------
 
-Laravel 5.7 available as container is a base platform for
-running various Laravel 5.7 frameworks.
+Laravel 10 available as container is a base platform for
+running various Laravel 10 frameworks.
 Laravel is a web application framework with expressive, elegant syntax.
 We’ve already laid the foundation freeing you to create without sweating the small things.
 
@@ -30,7 +30,7 @@ The following environment variables set their equivalent property value in the .
   * Set this to a empty value to skip processing ```php artisan optimize```.
   * Default: 0   
 * **LARAVEL_CONFIG_CACHE**
-  * Set this to a empty value to skip processing [optimizing configuration](https://laravel.com/docs/5.7/deployment#optimizing-configuration-loading)
+  * Set this to a empty value to skip processing [optimizing configuration](https://laravel.com/docs/10/deployment#optimizing-configuration-loading)
   * Default: 0
 * **LARAVEL_ROUTE_CACHE**
   * Set this to a empty value to skip processing

@@ -1,11 +1,11 @@
-FROM gzcascade/php:7.2-apache-stretch
+FROM gzcascade/php:8.1-apache-bullseye
 
 # Description
-# This image provides an Apache 2.4 + PHP 7.2 environment for running Laravel applications.
+# This image provides an Apache 2.4 + PHP 8.2 environment for running Laravel applications.
 # Exposed ports:
 # * 8080 - alternative port for http
 
-ENV LARAVEL_VERSION=5.7 \
+ENV LARAVEL_VERSION=10 \
     LARAVEL_VER_SHORT=57 \
     NAME=laravel
 
@@ -32,35 +32,33 @@ ENV LARAVEL_CONFIG_CACHE= \
 
 USER root
 
-ENV EXT_REDIS_VERSION=5.2.2 \
-    EXT_IGBINARY_VERSION=3.1.2
+ENV EXT_REDIS_VERSION=5.3.7
 
 # Install PHP extensions
-RUN requirements="libpng-dev libjpeg62-turbo libjpeg62-turbo-dev libfreetype6 libfreetype6-dev libgpgme11-dev" \
+# gd
+RUN requirements="libpng-dev libjpeg62-turbo libjpeg62-turbo-dev libfreetype6 libfreetype6-dev libgpgme11-dev" \ 
     && apt-get update \
     && apt-get install -y $requirements \
-    # gd
-    && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
-    && docker-php-ext-install gd \
-    # gnupg
-    && pecl install gnupg \
-    && docker-php-ext-enable gnupg \
-# Install database driver    
-    # pdo_mysql
-    && docker-php-ext-install pdo_mysql \
-# Install cache driver    
-    && docker-php-source extract \
-    # igbinary
-    && mkdir -p /usr/src/php/ext/igbinary \
-    && curl -fsSL https://github.com/igbinary/igbinary/archive/$EXT_IGBINARY_VERSION.tar.gz | tar xvz -C /usr/src/php/ext/igbinary --strip 1 \
-    && docker-php-ext-install igbinary \
-    # redis
-    && mkdir -p /usr/src/php/ext/redis \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install gd
+    
+# igbinary
+RUN pecl install igbinary \
+    && docker-php-ext-enable igbinary
+
+# redis
+RUN mkdir -p /usr/src/php/ext/redis \
     && curl -fsSL https://github.com/phpredis/phpredis/archive/$EXT_REDIS_VERSION.tar.gz | tar xvz -C /usr/src/php/ext/redis --strip 1 \
     && docker-php-ext-configure redis --enable-redis-igbinary \
-    && docker-php-ext-install redis \
+    && docker-php-ext-install redis
+
+# others
+ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+RUN chmod +x /usr/local/bin/install-php-extensions \ 
+    && install-php-extensions gnupg pdo_mysql intl
+
 # Cleanup
-    && docker-php-source delete \
+RUN docker-php-source delete \
     && requirementsToRemove="libpng-dev libjpeg62-turbo-dev libfreetype6-dev " \
     && apt-get purge --auto-remove -y $requirementsToRemove \
     && rm -rf /var/lib/apt/lists/*
