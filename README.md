@@ -1,7 +1,7 @@
 Laravel 10 container image
 ================
 
-This container image includes PHP 7.2 (gd, pdo_mysql, phpredis, bcmatch, intl) as a base image for your Laravel 10 applications.
+This container image includes PHP 8.1 (gd, pdo_mysql, phpredis, bcmatch, intl) as a base image for your Laravel 10 applications.
 
 Description
 -----------

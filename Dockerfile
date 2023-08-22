@@ -6,7 +6,7 @@ FROM gzcascade/php:8.1-apache-bullseye
 # * 8080 - alternative port for http
 
 ENV LARAVEL_VERSION=10 \
-    LARAVEL_VER_SHORT=57 \
+    LARAVEL_VER_SHORT=10 \
     NAME=laravel
 
 ENV SUMMARY="Platform for building and running Laravel $LARAVEL_VERSION applications" \
