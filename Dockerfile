@@ -55,7 +55,7 @@ RUN mkdir -p /usr/src/php/ext/redis \
 # others
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 RUN chmod +x /usr/local/bin/install-php-extensions \ 
-    && install-php-extensions gnupg pdo_mysql intl
+    && install-php-extensions gnupg pdo_mysql intl bcmath exif
 
 # Cleanup
 RUN docker-php-source delete \
