@@ -35,6 +35,9 @@ USER root
 ENV EXT_REDIS_VERSION=5.2.2 \
     EXT_IGBINARY_VERSION=3.1.2
 
+ENV NEW_RELIC_AGENT_VERSION=10.10.0.1 \
+    NEW_RELIC_INI=/usr/local/etc/php/conf.d/newrelic.ini
+
 # Install PHP extensions
 RUN requirements="libpng-dev libjpeg62-turbo libjpeg62-turbo-dev libfreetype6 libfreetype6-dev libgpgme11-dev" \
     && apt-get update \
@@ -59,6 +62,14 @@ RUN requirements="libpng-dev libjpeg62-turbo libjpeg62-turbo-dev libfreetype6 li
     && curl -fsSL https://github.com/phpredis/phpredis/archive/$EXT_REDIS_VERSION.tar.gz | tar xvz -C /usr/src/php/ext/redis --strip 1 \
     && docker-php-ext-configure redis --enable-redis-igbinary \
     && docker-php-ext-install redis \
+# Install newrelic
+    && curl -L https://download.newrelic.com/php_agent/archive/${NEW_RELIC_AGENT_VERSION}/newrelic-php5-${NEW_RELIC_AGENT_VERSION}-linux.tar.gz | tar -C /tmp -zx \
+    && export NR_INSTALL_USE_CP_NOT_LN=1 \
+    && export NR_INSTALL_SILENT=1 \
+    && /tmp/newrelic-php5-${NEW_RELIC_AGENT_VERSION}-linux/newrelic-install install \
+    && rm -rf /tmp/newrelic-php5-* /tmp/nrinstall* \
+    && touch ${NEW_RELIC_INI} \
+    && chmod a+rw ${NEW_RELIC_INI} /usr/local/etc/php/conf.d /var/log/newrelic \
 # Cleanup
     && docker-php-source delete \
     && requirementsToRemove="libpng-dev libjpeg62-turbo-dev libfreetype6-dev " \
