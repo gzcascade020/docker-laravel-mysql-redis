@@ -35,7 +35,7 @@ USER root
 ENV EXT_REDIS_VERSION=5.2.2 \
     EXT_IGBINARY_VERSION=3.1.2
 
-ENV NEW_RELIC_AGENT_VERSION=10.10.0.1 \
+ENV NEW_RELIC_AGENT_VERSION=10.14.0.3 \
     NEW_RELIC_INI=/usr/local/etc/php/conf.d/newrelic.ini
 
 # Install PHP extensions
